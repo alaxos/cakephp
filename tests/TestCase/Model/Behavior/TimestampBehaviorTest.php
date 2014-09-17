@@ -358,7 +358,7 @@ class TimestampBehaviorTest extends TestCase {
 		$this->loadFixtures('User');
 
 		$table = TableRegistry::get('users');
-		$table->addBehavior('Timestamp', [
+		$table->loadBehavior('Timestamp', [
 			'events' => [
 				'Model.beforeSave' => [
 					'created' => 'new',

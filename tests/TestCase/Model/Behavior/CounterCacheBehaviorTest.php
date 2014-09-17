@@ -90,7 +90,7 @@ class CounterCacheBehaviorTest extends TestCase {
 	public function testAdd() {
 		$this->post->belongsTo('Users');
 
-		$this->post->addBehavior('CounterCache', [
+		$this->post->loadBehavior('CounterCache', [
 			'Users' => [
 				'post_count'
 			]
@@ -113,7 +113,7 @@ class CounterCacheBehaviorTest extends TestCase {
 	public function testAddScope() {
 		$this->post->belongsTo('Users');
 
-		$this->post->addBehavior('CounterCache', [
+		$this->post->loadBehavior('CounterCache', [
 			'Users' => [
 				'posts_published' => [
 					'conditions' => [
@@ -140,7 +140,7 @@ class CounterCacheBehaviorTest extends TestCase {
 	public function testDelete() {
 		$this->post->belongsTo('Users');
 
-		$this->post->addBehavior('CounterCache', [
+		$this->post->loadBehavior('CounterCache', [
 			'Users' => [
 				'post_count'
 			]
@@ -163,7 +163,7 @@ class CounterCacheBehaviorTest extends TestCase {
 	public function testCustomFind() {
 		$this->post->belongsTo('Users');
 
-		$this->post->addBehavior('CounterCache', [
+		$this->post->loadBehavior('CounterCache', [
 			'Users' => [
 				'posts_published' => [
 					'finder' => 'published'
@@ -191,7 +191,7 @@ class CounterCacheBehaviorTest extends TestCase {
 		$table = $this->post;
 		$entity = $this->_getEntity();
 
-		$this->post->addBehavior('CounterCache', [
+		$this->post->loadBehavior('CounterCache', [
 			'Users' => [
 				'posts_published' => function (Event $orgEvent, Entity $orgEntity, Table $orgTable) use ($entity, $table) {
 					$this->assertSame($orgTable, $table);
@@ -218,7 +218,7 @@ class CounterCacheBehaviorTest extends TestCase {
 	public function testLambdaSubquery() {
 		$this->post->belongsTo('Users');
 
-		$this->post->addBehavior('CounterCache', [
+		$this->post->loadBehavior('CounterCache', [
 			'Users' => [
 				'posts_published' => function (Event $event, Entity $entity, Table $table) {
 					$query = new Query($this->connection);
@@ -244,7 +244,7 @@ class CounterCacheBehaviorTest extends TestCase {
 	public function testMultiple() {
 		$this->post->belongsTo('Users');
 
-		$this->post->addBehavior('CounterCache', [
+		$this->post->loadBehavior('CounterCache', [
 			'Users' => [
 				'post_count',
 				'posts_published' => [

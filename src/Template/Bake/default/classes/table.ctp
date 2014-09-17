@@ -51,7 +51,7 @@ $key = array_map(function($el) { return "'$el'"; }, (array)$primaryKey);
 <?php endif ?>
 <?php endif ?>
 <?php foreach ($behaviors as $behavior => $behaviorData): ?>
-		$this->addBehavior('<?= $behavior ?>'<?= $behaviorData ? ", [" . implode(', ', $behaviorData) . ']' : '' ?>);
+		$this->loadBehavior('<?= $behavior ?>'<?= $behaviorData ? ", [" . implode(', ', $behaviorData) . ']' : '' ?>);
 <?php endforeach ?>
 <?php $firstAssoc = true; ?>
 <?php foreach ($associations as $type => $assocs): ?>

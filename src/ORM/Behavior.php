@@ -96,7 +96,7 @@ use Cake\Event\EventListener;
  * findSlugged(Query $query, array $options)
  * }}}
  *
- * @see \Cake\ORM\Table::addBehavior()
+ * @see \Cake\ORM\Table::loadBehavior()
  * @see \Cake\Event\EventManager
  */
 class Behavior implements EventListener {

@@ -478,7 +478,23 @@ class Table implements RepositoryInterface, EventListener {
 	}
 
 /**
- * Add a behavior.
+ * Alias for loadBehavior() for backwards compatibility.
+ *
+ * @param string $name The name of the behavior. Can be a short class reference.
+ * @param array $options The options for the behavior to use.
+ * @return void
+ * @deprecated 3.0.0 Use loadBehavior() instead.
+ */
+	public function addBehavior($name, array $options = []) {
+		trigger_error(
+			'addBehavior() is deprecated, use loadBehavior() instead',
+			E_USER_DEPRECATED
+		);
+		return $this->loadBehavior($name, $options);
+	}
+
+/**
+ * Load a behavior.
  *
  * Adds a behavior to this table's behavior collection. Behaviors
  * provide an easy way to create horizontally re-usable features
@@ -490,7 +506,7 @@ class Table implements RepositoryInterface, EventListener {
  * Load a behavior, with some settings.
  *
  * {{{
- * $this->addBehavior('Tree', ['parent' => 'parentId']);
+ * $this->loadBehavior('Tree', ['parent' => 'parentId']);
  * }}}
  *
  * Behaviors are generally loaded during Table::initialize().
@@ -500,7 +516,7 @@ class Table implements RepositoryInterface, EventListener {
  * @return void
  * @see \Cake\ORM\Behavior
  */
-	public function addBehavior($name, array $options = []) {
+	public function loadBehavior($name, array $options = []) {
 		$this->_behaviors->load($name, $options);
 	}
 

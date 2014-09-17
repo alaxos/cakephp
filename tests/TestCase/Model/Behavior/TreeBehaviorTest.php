@@ -40,7 +40,7 @@ class TreeBehaviorTest extends TestCase {
 		parent::setUp();
 		$this->table = TableRegistry::get('NumberTrees');
 		$this->table->primaryKey(['id']);
-		$this->table->addBehavior('Tree');
+		$this->table->loadBehavior('Tree');
 	}
 
 	public function tearDown() {
@@ -68,7 +68,7 @@ class TreeBehaviorTest extends TestCase {
 
 		// find path with scope
 		$table = TableRegistry::get('MenuLinkTrees');
-		$table->addBehavior('Tree', ['scope' => ['menu' => 'main-menu']]);
+		$table->loadBehavior('Tree', ['scope' => ['menu' => 'main-menu']]);
 		$nodes = $table->find('path', ['for' => 5]);
 		$this->assertEquals([1, 3, 4, 5], $nodes->extract('id')->toArray());
 	}
@@ -102,7 +102,7 @@ class TreeBehaviorTest extends TestCase {
 
 		// test scoping
 		$table = TableRegistry::get('MenuLinkTrees');
-		$table->addBehavior('Tree', ['scope' => ['menu' => 'main-menu']]);
+		$table->loadBehavior('Tree', ['scope' => ['menu' => 'main-menu']]);
 		$count = $table->childCount($table->get(3), false);
 		$this->assertEquals(2, $count);
 	}
@@ -128,7 +128,7 @@ class TreeBehaviorTest extends TestCase {
  */
 	public function testCallableScoping() {
 		$table = TableRegistry::get('MenuLinkTrees');
-		$table->addBehavior('Tree', [
+		$table->loadBehavior('Tree', [
 			'scope' => function ($query) {
 				return $query->where(['menu' => 'main-menu']);
 			}
@@ -144,7 +144,7 @@ class TreeBehaviorTest extends TestCase {
  */
 	public function testFindChildren() {
 		$table = TableRegistry::get('MenuLinkTrees');
-		$table->addBehavior('Tree', ['scope' => ['menu' => 'main-menu']]);
+		$table->loadBehavior('Tree', ['scope' => ['menu' => 'main-menu']]);
 
 		// root
 		$nodeIds = [];
@@ -169,7 +169,7 @@ class TreeBehaviorTest extends TestCase {
  */
 	public function testFindChildrenException() {
 		$table = TableRegistry::get('MenuLinkTrees');
-		$table->addBehavior('Tree', ['scope' => ['menu' => 'main-menu']]);
+		$table->loadBehavior('Tree', ['scope' => ['menu' => 'main-menu']]);
 		$query = $table->find('children', ['for' => 500]);
 	}
 
@@ -180,7 +180,7 @@ class TreeBehaviorTest extends TestCase {
  */
 	public function testFindTreeList() {
 		$table = TableRegistry::get('MenuLinkTrees');
-		$table->addBehavior('Tree', ['scope' => ['menu' => 'main-menu']]);
+		$table->loadBehavior('Tree', ['scope' => ['menu' => 'main-menu']]);
 		$result = $table->find('treeList')->toArray();
 		$expected = [
 			1 => 'Link 1',
@@ -202,7 +202,7 @@ class TreeBehaviorTest extends TestCase {
  */
 	public function testFindTreeListCustom() {
 		$table = TableRegistry::get('MenuLinkTrees');
-		$table->addBehavior('Tree', ['scope' => ['menu' => 'main-menu']]);
+		$table->loadBehavior('Tree', ['scope' => ['menu' => 'main-menu']]);
 		$result = $table
 			->find('treeList', ['keyPath' => 'url', 'valuePath' => 'id', 'spacer' => ' '])
 			->toArray();
@@ -226,7 +226,7 @@ class TreeBehaviorTest extends TestCase {
  */
 	public function testMoveUp() {
 		$table = TableRegistry::get('MenuLinkTrees');
-		$table->addBehavior('Tree', ['scope' => ['menu' => 'main-menu']]);
+		$table->loadBehavior('Tree', ['scope' => ['menu' => 'main-menu']]);
 
 		// top level, wont move
 		$node = $this->table->moveUp($table->get(1), 10);
@@ -251,7 +251,7 @@ class TreeBehaviorTest extends TestCase {
  */
 	public function testMoveLeaf() {
 		$table = TableRegistry::get('MenuLinkTrees');
-		$table->addBehavior('Tree', ['scope' => ['menu' => 'main-menu']]);
+		$table->loadBehavior('Tree', ['scope' => ['menu' => 'main-menu']]);
 		$node = $table->moveUp($table->get(5), 1);
 		$this->assertEquals(['lft' => 6, 'rght' => 7], $node->extract(['lft', 'rght']));
 	}
@@ -263,7 +263,7 @@ class TreeBehaviorTest extends TestCase {
  */
 	public function testMoveTop() {
 		$table = TableRegistry::get('MenuLinkTrees');
-		$table->addBehavior('Tree', ['scope' => ['menu' => 'main-menu']]);
+		$table->loadBehavior('Tree', ['scope' => ['menu' => 'main-menu']]);
 		$node = $table->moveUp($table->get(8), true);
 		$this->assertEquals(['lft' => 1, 'rght' => 2], $node->extract(['lft', 'rght']));
 		$nodes = $table->find()
@@ -284,7 +284,7 @@ class TreeBehaviorTest extends TestCase {
  */
 	public function testMoveNoTreeColumns() {
 		$table = TableRegistry::get('MenuLinkTrees');
-		$table->addBehavior('Tree', ['scope' => ['menu' => 'main-menu']]);
+		$table->loadBehavior('Tree', ['scope' => ['menu' => 'main-menu']]);
 		$node = $table->get(8);
 		$node->unsetProperty('lft');
 		$node->unsetProperty('rght');
@@ -308,7 +308,7 @@ class TreeBehaviorTest extends TestCase {
  */
 	public function testMoveDown() {
 		$table = TableRegistry::get('MenuLinkTrees');
-		$table->addBehavior('Tree', ['scope' => ['menu' => 'main-menu']]);
+		$table->loadBehavior('Tree', ['scope' => ['menu' => 'main-menu']]);
 		// latest node, wont move
 		$node = $this->table->moveDown($table->get(8), 10);
 		$this->assertEquals(['lft' => 21, 'rght' => 22], $node->extract(['lft', 'rght']));
@@ -330,7 +330,7 @@ class TreeBehaviorTest extends TestCase {
  */
 	public function testMoveLeafDown() {
 		$table = TableRegistry::get('MenuLinkTrees');
-		$table->addBehavior('Tree', ['scope' => ['menu' => 'main-menu']]);
+		$table->loadBehavior('Tree', ['scope' => ['menu' => 'main-menu']]);
 		$node = $table->moveDown($table->get(5), 1);
 		$this->assertEquals(['lft' => 6, 'rght' => 7], $node->extract(['lft', 'rght']));
 	}
@@ -342,7 +342,7 @@ class TreeBehaviorTest extends TestCase {
  */
 	public function testMoveToBottom() {
 		$table = TableRegistry::get('MenuLinkTrees');
-		$table->addBehavior('Tree', ['scope' => ['menu' => 'main-menu']]);
+		$table->loadBehavior('Tree', ['scope' => ['menu' => 'main-menu']]);
 		$node = $table->moveDown($table->get(1), true);
 		$this->assertEquals(['lft' => 7, 'rght' => 16], $node->extract(['lft', 'rght']));
 		$nodes = $table->find()
@@ -363,7 +363,7 @@ class TreeBehaviorTest extends TestCase {
  */
 	public function testMoveDownNoTreeColumns() {
 		$table = TableRegistry::get('MenuLinkTrees');
-		$table->addBehavior('Tree', ['scope' => ['menu' => 'main-menu']]);
+		$table->loadBehavior('Tree', ['scope' => ['menu' => 'main-menu']]);
 		$node = $table->get(1);
 		$node->unsetProperty('lft');
 		$node->unsetProperty('rght');
@@ -401,7 +401,7 @@ class TreeBehaviorTest extends TestCase {
  */
 	public function testRecoverScoped() {
 		$table = TableRegistry::get('MenuLinkTrees');
-		$table->addBehavior('Tree', ['scope' => ['menu' => 'main-menu']]);
+		$table->loadBehavior('Tree', ['scope' => ['menu' => 'main-menu']]);
 		$expected = $table->find()
 			->where(['menu' => 'main-menu'])
 			->order('lft')

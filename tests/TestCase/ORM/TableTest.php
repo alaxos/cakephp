@@ -1056,7 +1056,7 @@ class TableTest extends \Cake\TestSuite\TestCase {
  *
  * @return void
  */
-	public function testAddBehavior() {
+	public function testLoadBehavior() {
 		$mock = $this->getMock('Cake\ORM\BehaviorRegistry', [], [], '', false);
 		$mock->expects($this->once())
 			->method('load')
@@ -1066,7 +1066,7 @@ class TableTest extends \Cake\TestSuite\TestCase {
 			'table' => 'articles',
 			'behaviors' => $mock
 		]);
-		$table->addBehavior('Sluggable');
+		$table->loadBehavior('Sluggable');
 	}
 
 /**
@@ -1103,9 +1103,9 @@ class TableTest extends \Cake\TestSuite\TestCase {
  *
  * @expectedException \Cake\ORM\Exception\MissingBehaviorException
  */
-	public function testAddBehaviorMissing() {
+	public function testLoadBehaviorMissing() {
 		$table = TableRegistry::get('article');
-		$this->assertNull($table->addBehavior('NopeNotThere'));
+		$this->assertNull($table->loadBehavior('NopeNotThere'));
 	}
 
 /**
@@ -1115,7 +1115,7 @@ class TableTest extends \Cake\TestSuite\TestCase {
  */
 	public function testCallBehaviorMethod() {
 		$table = TableRegistry::get('article');
-		$table->addBehavior('Sluggable');
+		$table->loadBehavior('Sluggable');
 		$this->assertEquals('some_value', $table->slugify('some value'));
 	}
 
@@ -1126,7 +1126,7 @@ class TableTest extends \Cake\TestSuite\TestCase {
  */
 	public function testCallBehaviorAliasedMethod() {
 		$table = TableRegistry::get('article');
-		$table->addBehavior('Sluggable', ['implementedMethods' => ['wednesday' => 'slugify']]);
+		$table->loadBehavior('Sluggable', ['implementedMethods' => ['wednesday' => 'slugify']]);
 		$this->assertEquals('some_value', $table->wednesday('some value'));
 	}
 
@@ -1137,7 +1137,7 @@ class TableTest extends \Cake\TestSuite\TestCase {
  */
 	public function testCallBehaviorFinder() {
 		$table = TableRegistry::get('articles');
-		$table->addBehavior('Sluggable');
+		$table->loadBehavior('Sluggable');
 
 		$query = $table->find('noSlug');
 		$this->assertInstanceOf('Cake\ORM\Query', $query);
@@ -1151,7 +1151,7 @@ class TableTest extends \Cake\TestSuite\TestCase {
  */
 	public function testCallBehaviorAliasedFinder() {
 		$table = TableRegistry::get('articles');
-		$table->addBehavior('Sluggable', ['implementedFinders' => ['special' => 'findNoSlug']]);
+		$table->loadBehavior('Sluggable', ['implementedFinders' => ['special' => 'findNoSlug']]);
 
 		$query = $table->find('special');
 		$this->assertInstanceOf('Cake\ORM\Query', $query);
@@ -2357,7 +2357,7 @@ class TableTest extends \Cake\TestSuite\TestCase {
 	public function testBehaviorIntrospection() {
 		$table = TableRegistry::get('users');
 
-		$table->addBehavior('Timestamp');
+		$table->loadBehavior('Timestamp');
 		$this->assertTrue($table->hasBehavior('Timestamp'), 'should be true on loaded behavior');
 		$this->assertFalse($table->hasBehavior('Tree'), 'should be false on unloaded behavior');
 	}
@@ -3474,7 +3474,7 @@ class TableTest extends \Cake\TestSuite\TestCase {
  */
 	public function testDebugInfo() {
 		$articles = TableRegistry::get('articles');
-		$articles->addBehavior('Timestamp');
+		$articles->loadBehavior('Timestamp');
 		$result = $articles->__debugInfo();
 		$expected = [
 			'table' => 'articles',

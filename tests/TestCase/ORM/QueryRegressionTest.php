@@ -414,7 +414,7 @@ class QueryRegressionTest extends TestCase {
  */
 	public function testAssociationSubQueryNoOffset() {
 		$table = TableRegistry::get('Articles');
-		$table->addBehavior('Translate', ['fields' => ['title', 'body']]);
+		$table->loadBehavior('Translate', ['fields' => ['title', 'body']]);
 		$table->locale('eng');
 		$query = $table->find('translations')->limit(10)->offset(1);
 		$result = $query->toArray();
